@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-Hans">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +7,9 @@
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: -apple-system, 'SF Pro Text', 'PingFang SC', sans-serif; font-size: 16px; line-height: 1.8; color: #1c1c1e; background: #fff; padding: 20px; max-width: 720px; margin: 0 auto; }
+  .language-bar { display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-bottom: 20px; }
+  .language-bar label { font-size: 14px; color: #636366; }
+  .language-bar select { font: inherit; font-size: 14px; color: #1c1c1e; background: #f2f2f7; border: 0; border-radius: 8px; padding: 7px 30px 7px 10px; }
   h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
   h2 { font-size: 20px; font-weight: 600; margin-top: 32px; margin-bottom: 12px; }
   p { margin-bottom: 12px; }
@@ -14,67 +17,383 @@
   li { margin-bottom: 6px; }
   .date { font-size: 14px; color: #8e8e93; margin-bottom: 24px; }
   .footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid #e5e5ea; font-size: 14px; color: #8e8e93; }
+  [hidden] { display: none !important; }
 </style>
 </head>
 <body>
 
-<h1>DDchat 隐私政策</h1>
-<p class="date">最后更新日期：2026 年 5 月 5 日</p>
-
-<p>DDchat（以下简称"本应用"）非常重视您的隐私。本隐私政策说明了本应用如何收集、使用和保护您的信息。</p>
-
-<h2>1. 信息收集</h2>
-<p>本应用<strong>不会</strong>收集、上传或共享您的任何个人信息。具体来说：</p>
-<ul>
-  <li><strong>API 密钥</strong>：您配置的 API 服务商地址和密钥仅存储在您的设备本地，不会上传到任何服务器。</li>
-  <li><strong>对话内容</strong>：您与 AI 助手的所有对话记录仅保存在您的设备本地存储中。</li>
-  <li><strong>助手配置</strong>：您创建的助手及其设置（系统提示词、参数等）仅存储在设备本地。</li>
-</ul>
-
-<h2>2. 数据存储</h2>
-<p>本应用的所有数据均存储在您 iPhone 的本地文件系统中，包括：</p>
-<ul>
-  <li>API 服务商配置信息</li>
-  <li>AI 助手配置信息</li>
-  <li>对话历史记录</li>
-  <li>用户偏好设置</li>
-</ul>
-<p>这些数据不会被同步到任何云端服务器。如果您删除本应用，所有本地数据将被永久删除。</p>
-
-<h2>3. 网络通信</h2>
-<p>本应用会与您配置的第三方 AI API 服务商进行网络通信，以实现 AI 对话功能。这些通信：</p>
-<ul>
-  <li>仅在您主动发送消息时发生</li>
-  <li>直接连接到您配置的 API 服务商（如 Anthropic、DeepSeek 等）</li>
-  <li>不经过本应用的任何中间服务器</li>
-  <li>通信内容受 HTTPS 加密保护</li>
-</ul>
-<p>请注意，您发送给第三方 API 服务商的对话内容受该服务商自身的隐私政策约束。建议您查阅相关服务商的隐私政策。</p>
-
-<h2>4. 第三方服务</h2>
-<p>本应用不集成任何第三方分析、广告或追踪 SDK。本应用不使用 Cookie 或类似的追踪技术。</p>
-
-<h2>5. 儿童隐私</h2>
-<p>本应用不针对 13 岁以下的儿童。我们不会有意收集 13 岁以下儿童的个人信息。</p>
-
-<h2>6. 数据安全</h2>
-<p>您的 API 密钥和对话数据存储在设备的应用沙箱中，受 iOS 系统级别的安全保护。建议您：</p>
-<ul>
-  <li>为您的 iPhone 设置密码或生物识别锁定</li>
-  <li>定期更新您的 API 密钥</li>
-  <li>不要在公共场合展示您的 API 配置信息</li>
-</ul>
-
-<h2>7. 隐私政策更新</h2>
-<p>本隐私政策可能会不定期更新。更新后的政策将在本页面发布，并更新顶部的"最后更新日期"。</p>
-
-<h2>8. 联系我们</h2>
-<p>如果您对本隐私政策有任何疑问，请通过以下方式联系我们：</p>
-<p>邮箱：<a href="mailto:support@ddchat.app">support@ddchat.app</a></p>
-
-<div class="footer">
-  <p>&copy; 2026 DDchat. 保留所有权利。</p>
+<div class="language-bar">
+  <label for="language-select">Language</label>
+  <select id="language-select" aria-label="Language">
+    <option value="zh-Hans">简体中文</option>
+    <option value="zh-Hant">繁體中文</option>
+    <option value="en">English</option>
+    <option value="ja">日本語</option>
+    <option value="ko">한국어</option>
+  </select>
 </div>
+
+<main>
+  <article data-language="zh-Hans">
+    <h1>DDchat 隐私政策</h1>
+    <p class="date">最后更新日期：2026 年 8 月 23 日</p>
+
+    <p>DDchat（以下简称“本应用”）非常重视您的隐私。本隐私政策说明了本应用如何收集、使用和保护您的信息。</p>
+
+    <h2>1. 信息收集</h2>
+    <p>本应用不会建立账号、投放广告或使用分析 SDK 收集您的个人信息。为提供您主动使用的 AI 对话与联网搜索功能，相关内容会直接发送给您选择的第三方服务商：</p>
+    <ul>
+      <li><strong>API 密钥</strong>：您配置的 API 服务商地址和密钥仅存储在您的设备本地，不会上传到任何服务器。</li>
+      <li><strong>对话内容</strong>：您与 AI 助手的所有对话记录仅保存在您的设备本地存储中。</li>
+      <li><strong>助手配置</strong>：您创建的助手及其设置（系统提示词、参数等）仅存储在设备本地。</li>
+      <li><strong>图片</strong>：您选择或拍摄的图片保存在对话记录中，并仅在发送消息时传给当前 AI API 服务商。</li>
+      <li><strong>联网工具内容</strong>：仅在您开启联网搜索后，您的问题、模型自行生成的搜索词和待读取网页地址才会发送给相应服务。搜索可能由模型服务商内置工具、Exa MCP、Tavily、Bocha、智谱或 Exa 处理；网页正文优先通过 Jina Reader 读取，失败时由您的设备直接访问目标网页。</li>
+    </ul>
+
+    <h2>2. 数据存储</h2>
+    <p>本应用的所有数据均存储在您 iPhone 的本地文件系统中，包括：</p>
+    <ul>
+      <li>API 服务商配置信息</li>
+      <li>AI 助手配置信息</li>
+      <li>对话历史记录</li>
+      <li>用户偏好设置</li>
+      <li>您主动添加到对话中的图片</li>
+    </ul>
+    <p>这些数据不会被同步到任何云端服务器。如果您删除本应用，所有本地数据将被永久删除。</p>
+
+    <h2>3. 网络通信</h2>
+    <p>本应用会与您配置的第三方 AI API 服务商进行网络通信，以实现 AI 对话功能。这些通信：</p>
+    <ul>
+      <li>仅在您主动发送消息时发生</li>
+      <li>直接连接到您配置的 API 服务商（如 Anthropic、DeepSeek 等）</li>
+      <li>开启联网搜索时，直接连接到您选择的搜索服务商；Exa MCP 免费版连接 Exa 的公共 MCP 服务</li>
+      <li>模型调用网页读取时，会连接 Jina Reader；Jina Reader 不可用时，设备会直接连接目标网页</li>
+      <li>不经过本应用的任何中间服务器</li>
+      <li>通信内容受 HTTPS 加密保护</li>
+    </ul>
+    <p>请注意，您发送给第三方 AI API 或搜索服务商的对话、图片和搜索问题受相应服务商自身的隐私政策约束。建议您查阅相关服务商的隐私政策。</p>
+
+    <h2>4. 第三方服务</h2>
+    <p>本应用不集成任何第三方分析、广告或追踪 SDK。本应用不使用 Cookie 或类似的追踪技术。</p>
+
+    <h2>5. 儿童隐私</h2>
+    <p>本应用不针对 13 岁以下的儿童。我们不会有意收集 13 岁以下儿童的个人信息。</p>
+
+    <h2>6. 数据安全</h2>
+    <p>搜索服务 API 密钥保存在 iOS 钥匙串；其他本地配置和对话数据存储在应用沙箱中，受 iOS 系统级别的安全保护。建议您：</p>
+    <ul>
+      <li>为您的 iPhone 设置密码或生物识别锁定</li>
+      <li>定期更新您的 API 密钥</li>
+      <li>不要在公共场合展示您的 API 配置信息</li>
+    </ul>
+
+    <h2>7. 隐私政策更新</h2>
+    <p>本隐私政策可能会不定期更新。更新后的政策将在本页面发布，并更新顶部的“最后更新日期”。</p>
+
+    <h2>8. 联系我们</h2>
+    <p>如果您对本隐私政策有任何疑问，请通过以下方式联系我们：</p>
+    <p>邮箱：<a href="mailto:ddchatsupport@gmail.com">ddchatsupport@gmail.com</a></p>
+
+    <div class="footer"><p>&copy; 2026 DDchat. 保留所有权利。</p></div>
+  </article>
+
+  <article data-language="zh-Hant" hidden>
+    <h1>DDchat 隱私政策</h1>
+    <p class="date">最後更新日期：2026 年 8 月 23 日</p>
+
+    <p>DDchat（以下簡稱「本應用程式」）非常重視您的隱私。本隱私政策說明本應用程式如何收集、使用及保護您的資訊。</p>
+
+    <h2>1. 資訊收集</h2>
+    <p>本應用程式不會建立帳號、投放廣告或使用分析 SDK 收集您的個人資訊。為提供您主動使用的 AI 對話與聯網搜尋功能，相關內容會直接傳送給您選擇的第三方服務供應商：</p>
+    <ul>
+      <li><strong>API 金鑰</strong>：您設定的 API 服務供應商位址與金鑰僅儲存在您的裝置本機，不會上傳至任何伺服器。</li>
+      <li><strong>對話內容</strong>：您與 AI 助手的所有對話記錄僅保存在您的裝置本機儲存空間中。</li>
+      <li><strong>助手設定</strong>：您建立的助手及其設定（系統提示詞、參數等）僅儲存在裝置本機。</li>
+      <li><strong>圖片</strong>：您選擇或拍攝的圖片會保存在對話記錄中，並僅在傳送訊息時傳送給目前的 AI API 服務供應商。</li>
+      <li><strong>聯網工具內容</strong>：只有在您開啟聯網搜尋後，您的問題、模型自行產生的搜尋詞及待讀取的網頁位址才會傳送給相關服務。搜尋可能由模型服務供應商的內建工具、Exa MCP、Tavily、Bocha、智譜或 Exa 處理；網頁正文會優先透過 Jina Reader 讀取，失敗時由您的裝置直接存取目標網頁。</li>
+    </ul>
+
+    <h2>2. 資料儲存</h2>
+    <p>本應用程式的所有資料均儲存在您 iPhone 的本機檔案系統中，包括：</p>
+    <ul>
+      <li>API 服務供應商設定資訊</li>
+      <li>AI 助手設定資訊</li>
+      <li>對話歷史記錄</li>
+      <li>使用者偏好設定</li>
+      <li>您主動加入對話的圖片</li>
+    </ul>
+    <p>這些資料不會同步至任何雲端伺服器。如果您刪除本應用程式，所有本機資料將被永久刪除。</p>
+
+    <h2>3. 網路通訊</h2>
+    <p>本應用程式會與您設定的第三方 AI API 服務供應商進行網路通訊，以提供 AI 對話功能。這些通訊：</p>
+    <ul>
+      <li>僅在您主動傳送訊息時發生</li>
+      <li>直接連線至您設定的 API 服務供應商（如 Anthropic、DeepSeek 等）</li>
+      <li>開啟聯網搜尋時，直接連線至您選擇的搜尋服務供應商；Exa MCP 免費版會連線至 Exa 的公共 MCP 服務</li>
+      <li>模型呼叫網頁讀取時，會連線至 Jina Reader；Jina Reader 無法使用時，裝置會直接連線至目標網頁</li>
+      <li>不會經過本應用程式的任何中介伺服器</li>
+      <li>通訊內容受 HTTPS 加密保護</li>
+    </ul>
+    <p>請注意，您傳送給第三方 AI API 或搜尋服務供應商的對話、圖片及搜尋問題，受相關服務供應商本身的隱私政策約束。建議您查閱相關服務供應商的隱私政策。</p>
+
+    <h2>4. 第三方服務</h2>
+    <p>本應用程式不整合任何第三方分析、廣告或追蹤 SDK。本應用程式不使用 Cookie 或類似的追蹤技術。</p>
+
+    <h2>5. 兒童隱私</h2>
+    <p>本應用程式並非針對 13 歲以下兒童。我們不會有意收集 13 歲以下兒童的個人資訊。</p>
+
+    <h2>6. 資料安全</h2>
+    <p>搜尋服務 API 金鑰保存在 iOS 鑰匙圈中；其他本機設定及對話資料儲存在應用程式沙箱內，受 iOS 系統層級的安全保護。建議您：</p>
+    <ul>
+      <li>為您的 iPhone 設定密碼或生物辨識鎖定</li>
+      <li>定期更新您的 API 金鑰</li>
+      <li>不要在公共場所展示您的 API 設定資訊</li>
+    </ul>
+
+    <h2>7. 隱私政策更新</h2>
+    <p>本隱私政策可能不定期更新。更新後的政策將發布於本頁面，並更新頁面頂部的「最後更新日期」。</p>
+
+    <h2>8. 聯絡我們</h2>
+    <p>如果您對本隱私政策有任何疑問，請透過以下方式聯絡我們：</p>
+    <p>電子郵件：<a href="mailto:ddchatsupport@gmail.com">ddchatsupport@gmail.com</a></p>
+
+    <div class="footer"><p>&copy; 2026 DDchat. 保留所有權利。</p></div>
+  </article>
+
+  <article data-language="en" hidden>
+    <h1>DDchat Privacy Policy</h1>
+    <p class="date">Last updated: August 23, 2026</p>
+
+    <p>DDchat (the “App”) takes your privacy seriously. This Privacy Policy explains how the App collects, uses, and protects your information.</p>
+
+    <h2>1. Information Collection</h2>
+    <p>The App does not create user accounts, display advertisements, or use analytics SDKs to collect your personal information. To provide the AI chat and web search features you choose to use, relevant content is sent directly to the third-party service provider you select:</p>
+    <ul>
+      <li><strong>API keys</strong>: The API provider addresses and keys you configure are stored only on your device and are not uploaded to any server.</li>
+      <li><strong>Chat content</strong>: All conversations with AI assistants are stored only on your device.</li>
+      <li><strong>Assistant configurations</strong>: Assistants you create and their settings, including system prompts and parameters, are stored only on your device.</li>
+      <li><strong>Images</strong>: Images you select or capture are saved in the conversation history and are sent to the current AI API provider only when you send a message.</li>
+      <li><strong>Web tool content</strong>: Only after you enable web search will your question, search terms generated by the model, and URLs to be read be sent to the relevant services. Searches may be processed by a model provider’s built-in tools, Exa MCP, Tavily, Bocha, Zhipu, or Exa. Webpage content is read through Jina Reader first; if that fails, your device accesses the target webpage directly.</li>
+    </ul>
+
+    <h2>2. Data Storage</h2>
+    <p>All App data is stored in the local file system on your iPhone, including:</p>
+    <ul>
+      <li>API provider configurations</li>
+      <li>AI assistant configurations</li>
+      <li>Chat history</li>
+      <li>User preferences</li>
+      <li>Images you add to conversations</li>
+    </ul>
+    <p>This data is not synchronized to any cloud server. If you delete the App, all local data will be permanently deleted.</p>
+
+    <h2>3. Network Communication</h2>
+    <p>The App communicates with third-party AI API providers you configure to provide AI chat functionality. These communications:</p>
+    <ul>
+      <li>Occur only when you actively send a message</li>
+      <li>Connect directly to your configured API provider, such as Anthropic or DeepSeek</li>
+      <li>Connect directly to your selected search provider when web search is enabled; the free Exa MCP option connects to Exa’s public MCP service</li>
+      <li>Connect to Jina Reader when the model requests webpage content; if Jina Reader is unavailable, your device connects directly to the target webpage</li>
+      <li>Do not pass through any intermediary server operated by the App</li>
+      <li>Are protected by HTTPS encryption</li>
+    </ul>
+    <p>Please note that conversations, images, and search queries sent to third-party AI API or search providers are governed by those providers’ own privacy policies. We recommend reviewing the privacy policies of the relevant providers.</p>
+
+    <h2>4. Third-Party Services</h2>
+    <p>The App does not integrate any third-party analytics, advertising, or tracking SDKs. The App does not use cookies or similar tracking technologies.</p>
+
+    <h2>5. Children’s Privacy</h2>
+    <p>The App is not directed at children under the age of 13. We do not knowingly collect personal information from children under 13.</p>
+
+    <h2>6. Data Security</h2>
+    <p>Search service API keys are stored in the iOS Keychain. Other local configurations and chat data are stored in the App sandbox and protected by iOS system-level security. We recommend that you:</p>
+    <ul>
+      <li>Protect your iPhone with a passcode or biometric lock</li>
+      <li>Update your API keys regularly</li>
+      <li>Do not display your API configuration information in public</li>
+    </ul>
+
+    <h2>7. Privacy Policy Updates</h2>
+    <p>We may update this Privacy Policy from time to time. The updated policy will be posted on this page, and the “Last updated” date above will be revised.</p>
+
+    <h2>8. Contact Us</h2>
+    <p>If you have any questions about this Privacy Policy, please contact us at:</p>
+    <p>Email: <a href="mailto:ddchatsupport@gmail.com">ddchatsupport@gmail.com</a></p>
+
+    <div class="footer"><p>&copy; 2026 DDchat. All rights reserved.</p></div>
+  </article>
+
+  <article data-language="ja" hidden>
+    <h1>DDchat プライバシーポリシー</h1>
+    <p class="date">最終更新日：2026年8月23日</p>
+
+    <p>DDchat（以下「本アプリ」）は、お客様のプライバシーを重視しています。本プライバシーポリシーでは、本アプリがお客様の情報をどのように収集、利用、保護するかについて説明します。</p>
+
+    <h2>1. 情報の収集</h2>
+    <p>本アプリは、ユーザーアカウントの作成、広告の表示、または分析 SDK を使用した個人情報の収集を行いません。お客様が選択して利用する AI チャットおよびウェブ検索機能を提供するため、関連する内容はお客様が選択した第三者サービスプロバイダーへ直接送信されます。</p>
+    <ul>
+      <li><strong>API キー</strong>：設定した API プロバイダーのアドレスとキーはお客様の端末内にのみ保存され、いかなるサーバーにもアップロードされません。</li>
+      <li><strong>チャット内容</strong>：AI アシスタントとのすべての会話履歴は、お客様の端末内にのみ保存されます。</li>
+      <li><strong>アシスタント設定</strong>：作成したアシスタントとその設定（システムプロンプト、パラメータなど）は、端末内にのみ保存されます。</li>
+      <li><strong>画像</strong>：選択または撮影した画像は会話履歴に保存され、メッセージの送信時にのみ、現在の AI API プロバイダーへ送信されます。</li>
+      <li><strong>ウェブツールの内容</strong>：ウェブ検索を有効にした場合に限り、お客様の質問、モデルが生成した検索語、読み取り対象のウェブページ URL が関連サービスへ送信されます。検索は、モデルプロバイダーの内蔵ツール、Exa MCP、Tavily、Bocha、Zhipu、または Exa によって処理される場合があります。ウェブページ本文はまず Jina Reader を通じて読み取られ、失敗した場合はお客様の端末から対象ページへ直接アクセスします。</li>
+    </ul>
+
+    <h2>2. データの保存</h2>
+    <p>本アプリのすべてのデータは、お客様の iPhone のローカルファイルシステムに保存されます。これには以下が含まれます。</p>
+    <ul>
+      <li>API プロバイダーの設定情報</li>
+      <li>AI アシスタントの設定情報</li>
+      <li>チャット履歴</li>
+      <li>ユーザー設定</li>
+      <li>会話に追加した画像</li>
+    </ul>
+    <p>これらのデータがクラウドサーバーへ同期されることはありません。本アプリを削除すると、すべてのローカルデータは完全に削除されます。</p>
+
+    <h2>3. ネットワーク通信</h2>
+    <p>本アプリは、AI チャット機能を提供するため、お客様が設定した第三者 AI API プロバイダーと通信します。これらの通信は以下のとおりです。</p>
+    <ul>
+      <li>お客様がメッセージを送信した場合にのみ行われます</li>
+      <li>Anthropic や DeepSeek など、設定した API プロバイダーへ直接接続します</li>
+      <li>ウェブ検索が有効な場合、選択した検索プロバイダーへ直接接続します。Exa MCP の無料版は Exa の公開 MCP サービスへ接続します</li>
+      <li>モデルがウェブページの読み取りを要求した場合、Jina Reader へ接続します。Jina Reader が利用できない場合は、端末から対象ページへ直接接続します</li>
+      <li>本アプリが運営する中継サーバーを経由しません</li>
+      <li>通信内容は HTTPS 暗号化によって保護されます</li>
+    </ul>
+    <p>第三者の AI API または検索プロバイダーへ送信される会話、画像、検索内容には、各プロバイダーのプライバシーポリシーが適用されます。該当するプロバイダーのプライバシーポリシーをご確認ください。</p>
+
+    <h2>4. 第三者サービス</h2>
+    <p>本アプリは、第三者の分析、広告、追跡 SDK を一切組み込んでいません。また、Cookie または類似の追跡技術を使用しません。</p>
+
+    <h2>5. お子様のプライバシー</h2>
+    <p>本アプリは 13 歳未満のお子様を対象としていません。13 歳未満のお子様の個人情報を意図的に収集することはありません。</p>
+
+    <h2>6. データセキュリティ</h2>
+    <p>検索サービスの API キーは iOS キーチェーンに保存されます。その他のローカル設定とチャットデータはアプリのサンドボックス内に保存され、iOS のシステムレベルのセキュリティによって保護されます。以下を推奨します。</p>
+    <ul>
+      <li>iPhone にパスコードまたは生体認証ロックを設定する</li>
+      <li>API キーを定期的に更新する</li>
+      <li>公共の場で API 設定情報を表示しない</li>
+    </ul>
+
+    <h2>7. プライバシーポリシーの更新</h2>
+    <p>本プライバシーポリシーは随時更新される場合があります。更新後のポリシーは本ページに掲載し、上部の「最終更新日」も更新します。</p>
+
+    <h2>8. お問い合わせ</h2>
+    <p>本プライバシーポリシーに関するご質問は、以下のメールアドレスまでお問い合わせください。</p>
+    <p>メール：<a href="mailto:ddchatsupport@gmail.com">ddchatsupport@gmail.com</a></p>
+
+    <div class="footer"><p>&copy; 2026 DDchat. All rights reserved.</p></div>
+  </article>
+
+  <article data-language="ko" hidden>
+    <h1>DDchat 개인정보 처리방침</h1>
+    <p class="date">최종 업데이트: 2026년 8월 23일</p>
+
+    <p>DDchat(이하 “본 앱”)은 사용자의 개인정보를 중요하게 생각합니다. 본 개인정보 처리방침은 본 앱이 사용자의 정보를 수집, 이용 및 보호하는 방법을 설명합니다.</p>
+
+    <h2>1. 정보 수집</h2>
+    <p>본 앱은 사용자 계정을 생성하거나 광고를 표시하지 않으며, 분석 SDK를 사용하여 개인정보를 수집하지 않습니다. 사용자가 선택하여 이용하는 AI 대화 및 웹 검색 기능을 제공하기 위해 관련 콘텐츠가 사용자가 선택한 제3자 서비스 제공업체에 직접 전송됩니다.</p>
+    <ul>
+      <li><strong>API 키</strong>: 사용자가 설정한 API 제공업체 주소와 키는 사용자의 기기에만 저장되며 어떠한 서버에도 업로드되지 않습니다.</li>
+      <li><strong>대화 내용</strong>: AI 어시스턴트와의 모든 대화 기록은 사용자의 기기에만 저장됩니다.</li>
+      <li><strong>어시스턴트 설정</strong>: 사용자가 생성한 어시스턴트와 해당 설정(시스템 프롬프트, 매개변수 등)은 기기에만 저장됩니다.</li>
+      <li><strong>이미지</strong>: 사용자가 선택하거나 촬영한 이미지는 대화 기록에 저장되며, 메시지를 보낼 때만 현재 AI API 제공업체에 전송됩니다.</li>
+      <li><strong>웹 도구 콘텐츠</strong>: 웹 검색을 활성화한 경우에만 사용자의 질문, 모델이 생성한 검색어 및 읽을 웹페이지 주소가 관련 서비스로 전송됩니다. 검색은 모델 제공업체의 내장 도구, Exa MCP, Tavily, Bocha, Zhipu 또는 Exa에서 처리될 수 있습니다. 웹페이지 본문은 우선 Jina Reader를 통해 읽으며, 실패할 경우 사용자의 기기가 대상 웹페이지에 직접 접속합니다.</li>
+    </ul>
+
+    <h2>2. 데이터 저장</h2>
+    <p>본 앱의 모든 데이터는 다음 항목을 포함하여 사용자의 iPhone 로컬 파일 시스템에 저장됩니다.</p>
+    <ul>
+      <li>API 제공업체 설정 정보</li>
+      <li>AI 어시스턴트 설정 정보</li>
+      <li>대화 기록</li>
+      <li>사용자 환경설정</li>
+      <li>사용자가 대화에 추가한 이미지</li>
+    </ul>
+    <p>이 데이터는 어떠한 클라우드 서버에도 동기화되지 않습니다. 본 앱을 삭제하면 모든 로컬 데이터가 영구적으로 삭제됩니다.</p>
+
+    <h2>3. 네트워크 통신</h2>
+    <p>본 앱은 AI 대화 기능을 제공하기 위해 사용자가 설정한 제3자 AI API 제공업체와 네트워크로 통신합니다. 이러한 통신은 다음과 같습니다.</p>
+    <ul>
+      <li>사용자가 직접 메시지를 보낼 때만 발생합니다</li>
+      <li>Anthropic, DeepSeek 등 사용자가 설정한 API 제공업체에 직접 연결됩니다</li>
+      <li>웹 검색을 활성화하면 사용자가 선택한 검색 제공업체에 직접 연결되며, 무료 Exa MCP 옵션은 Exa의 공개 MCP 서비스에 연결됩니다</li>
+      <li>모델이 웹페이지 읽기를 요청하면 Jina Reader에 연결되며, Jina Reader를 사용할 수 없는 경우 기기가 대상 웹페이지에 직접 연결됩니다</li>
+      <li>본 앱이 운영하는 어떠한 중간 서버도 거치지 않습니다</li>
+      <li>통신 내용은 HTTPS 암호화로 보호됩니다</li>
+    </ul>
+    <p>제3자 AI API 또는 검색 제공업체로 전송되는 대화, 이미지 및 검색 질문에는 해당 제공업체의 개인정보 처리방침이 적용됩니다. 관련 제공업체의 개인정보 처리방침을 확인하시기 바랍니다.</p>
+
+    <h2>4. 제3자 서비스</h2>
+    <p>본 앱에는 제3자 분석, 광고 또는 추적 SDK가 포함되어 있지 않습니다. 본 앱은 쿠키 또는 유사한 추적 기술을 사용하지 않습니다.</p>
+
+    <h2>5. 아동의 개인정보</h2>
+    <p>본 앱은 만 13세 미만 아동을 대상으로 하지 않습니다. 당사는 만 13세 미만 아동의 개인정보를 고의로 수집하지 않습니다.</p>
+
+    <h2>6. 데이터 보안</h2>
+    <p>검색 서비스 API 키는 iOS 키체인에 저장됩니다. 기타 로컬 설정과 대화 데이터는 앱 샌드박스에 저장되며 iOS 시스템 수준의 보안으로 보호됩니다. 다음을 권장합니다.</p>
+    <ul>
+      <li>iPhone에 암호 또는 생체 인증 잠금을 설정하세요</li>
+      <li>API 키를 정기적으로 업데이트하세요</li>
+      <li>공공장소에서 API 설정 정보를 노출하지 마세요</li>
+    </ul>
+
+    <h2>7. 개인정보 처리방침 업데이트</h2>
+    <p>본 개인정보 처리방침은 수시로 업데이트될 수 있습니다. 업데이트된 방침은 이 페이지에 게시되며, 상단의 “최종 업데이트” 날짜도 변경됩니다.</p>
+
+    <h2>8. 문의하기</h2>
+    <p>본 개인정보 처리방침에 관한 질문은 아래 이메일로 문의해 주세요.</p>
+    <p>이메일: <a href="mailto:ddchatsupport@gmail.com">ddchatsupport@gmail.com</a></p>
+
+    <div class="footer"><p>&copy; 2026 DDchat. All rights reserved.</p></div>
+  </article>
+</main>
+
+<script>
+  const languageSelect = document.getElementById('language-select');
+  const policies = Array.from(document.querySelectorAll('[data-language]'));
+  const supportedLanguages = policies.map((policy) => policy.dataset.language);
+  const titles = {
+    'zh-Hans': 'DDchat 隐私政策',
+    'zh-Hant': 'DDchat 隱私政策',
+    en: 'DDchat Privacy Policy',
+    ja: 'DDchat プライバシーポリシー',
+    ko: 'DDchat 개인정보 처리방침'
+  };
+
+  function normalizedLanguage(language) {
+    if (!language) return 'zh-Hans';
+    if (supportedLanguages.includes(language)) return language;
+    const lowercased = language.toLowerCase();
+    if (lowercased.startsWith('zh-hant') || lowercased.startsWith('zh-tw') || lowercased.startsWith('zh-hk')) return 'zh-Hant';
+    if (lowercased.startsWith('zh')) return 'zh-Hans';
+    if (lowercased.startsWith('ja')) return 'ja';
+    if (lowercased.startsWith('ko')) return 'ko';
+    if (lowercased.startsWith('en')) return 'en';
+    return 'en';
+  }
+
+  function showLanguage(language, updateURL = false) {
+    const selectedLanguage = normalizedLanguage(language);
+    policies.forEach((policy) => {
+      policy.hidden = policy.dataset.language !== selectedLanguage;
+    });
+    languageSelect.value = selectedLanguage;
+    document.documentElement.lang = selectedLanguage;
+    document.title = titles[selectedLanguage];
+
+    if (updateURL) {
+      const url = new URL(window.location.href);
+      url.searchParams.set('lang', selectedLanguage);
+      window.history.replaceState({}, '', url);
+    }
+  }
+
+  const requestedLanguage = new URLSearchParams(window.location.search).get('lang');
+  showLanguage(requestedLanguage || navigator.language);
+  languageSelect.addEventListener('change', (event) => showLanguage(event.target.value, true));
+</script>
 
 </body>
 </html>
