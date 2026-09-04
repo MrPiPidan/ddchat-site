@@ -1,68 +1,1347 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-Hans">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DDchat - 智能 AI 对话助手</title>
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: -apple-system, 'SF Pro Text', 'PingFang SC', sans-serif; font-size: 16px; line-height: 1.8; color: #1c1c1e; background: #fff; }
-  .hero { text-align: center; padding: 60px 20px 40px; background: linear-gradient(135deg, #007AFF, #9333EA); color: #fff; }
-  .hero h1 { font-size: 36px; font-weight: 800; margin-bottom: 8px; }
-  .hero p { font-size: 18px; opacity: 0.9; }
-  .content { max-width: 720px; margin: 0 auto; padding: 40px 20px; }
-  h2 { font-size: 22px; font-weight: 700; margin-bottom: 16px; }
-  .features { list-style: none; padding: 0; }
-  .features li { padding: 12px 0; border-bottom: 1px solid #f2f2f7; font-size: 16px; }
-  .features li::before { content: "✦ "; color: #007AFF; font-weight: bold; }
-  .section { margin-bottom: 40px; }
-  .links { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 20px; }
-  .links a { display: inline-block; padding: 12px 24px; border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 15px; }
-  .links .primary { background: linear-gradient(135deg, #007AFF, #0064d2); color: #fff; }
-  .links .secondary { background: #f2f2f7; color: #1c1c1e; }
-  .contact { background: #f9f9fb; padding: 30px 20px; border-radius: 16px; }
-  .footer { text-align: center; padding: 30px 20px; font-size: 14px; color: #8e8e93; border-top: 1px solid #e5e5ea; margin-top: 40px; }
-  .footer a { color: #007AFF; text-decoration: none; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="DDchat AI 是一款精致简约的 iOS 原生 AI 客户端，支持联网搜索、多模态图片理解与 HTML 标签渲染。">
+  <meta name="theme-color" content="#e7eff8" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#162233" media="(prefers-color-scheme: dark)">
+  <title>DDchat — iOS AI 客户端</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --background: #f8fafc;
+      --surface: #eaf0f6;
+      --hero: #e7eff8;
+      --text: #17233a;
+      --secondary: #59687b;
+      --border: #d5dee8;
+      --accent: #0868d7;
+      --accent-hover: #0759b6;
+      --store-bg: #17233a;
+      --store-text: #ffffff;
+      --header: rgba(231, 239, 248, 0.94);
+      --showcase: #182944;
+      --showcase-text: #f7f9fc;
+      --showcase-secondary: #b8c7d9;
+      --screen-border: rgba(23, 35, 58, 0.14);
+      --screen-shadow: 0 28px 70px rgba(31, 58, 91, 0.20);
+      --page-width: 1120px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --background: #10151d;
+        --surface: #171e28;
+        --hero: #162233;
+        --text: #f2f5f8;
+        --secondary: #aab7c6;
+        --border: #2e3b4c;
+        --accent: #68aaf2;
+        --accent-hover: #87bbf5;
+        --store-bg: #f4f7fb;
+        --store-text: #111925;
+        --header: rgba(22, 34, 51, 0.94);
+        --showcase: #0b111b;
+        --showcase-text: #f4f7fb;
+        --showcase-secondary: #aebdce;
+        --screen-border: rgba(255, 255, 255, 0.14);
+        --screen-shadow: 0 28px 70px rgba(0, 0, 0, 0.36);
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 72px;
+    }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      background: var(--background);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+        "PingFang SC", "Hiragino Sans GB", "Hiragino Kaku Gothic ProN",
+        "Apple SD Gothic Neo", "Segoe UI", sans-serif;
+      font-size: 16px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: var(--accent);
+      text-underline-offset: 4px;
+      text-decoration-thickness: 1px;
+    }
+
+    a:hover {
+      text-decoration-thickness: 2px;
+    }
+
+    button,
+    select {
+      font: inherit;
+    }
+
+    .skip-link {
+      position: fixed;
+      top: 10px;
+      left: 12px;
+      z-index: 100;
+      padding: 8px 12px;
+      color: var(--background);
+      background: var(--text);
+      transform: translateY(-160%);
+    }
+
+    .skip-link:focus {
+      transform: translateY(0);
+    }
+
+    :focus-visible {
+      outline: 3px solid color-mix(in srgb, var(--accent) 55%, transparent);
+      outline-offset: 3px;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid var(--border);
+      background: var(--header);
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+    }
+
+    .header-inner,
+    .page,
+    .footer-inner {
+      width: min(var(--page-width), calc(100% - 40px));
+      margin-inline: auto;
+    }
+
+    .header-inner {
+      min-height: 64px;
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .brand {
+      color: var(--text);
+      font-family: ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      text-decoration: none;
+    }
+
+    .site-nav {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-left: auto;
+    }
+
+    .site-nav a {
+      color: var(--secondary);
+      font-size: 14px;
+      text-decoration: none;
+    }
+
+    .site-nav a:hover {
+      color: var(--text);
+    }
+
+    .language-control {
+      margin-left: 4px;
+    }
+
+    .language-control select {
+      min-height: 36px;
+      padding: 5px 28px 5px 9px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      background: var(--background);
+      font-size: 14px;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .hero-shell {
+      overflow: hidden;
+      background: var(--hero);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero {
+      padding: 54px 0 0;
+    }
+
+    .hero-layout {
+      min-height: 660px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 420px;
+      align-items: center;
+      gap: 64px;
+    }
+
+    .hero-copy {
+      max-width: 620px;
+      padding-bottom: 48px;
+    }
+
+    .product-identity {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 34px;
+    }
+
+    .app-icon {
+      width: 64px;
+      height: 64px;
+      display: block;
+      border-radius: 15px;
+      box-shadow: 0 12px 26px rgba(55, 90, 130, 0.16);
+    }
+
+    .product-name {
+      font-family: ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 21px;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+    }
+
+    .hero h1 {
+      max-width: 620px;
+      margin: 0;
+      font-family: ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: clamp(50px, 5.6vw, 68px);
+      line-height: 1.06;
+      letter-spacing: -0.05em;
+    }
+
+    .hero h1 span {
+      display: block;
+      white-space: nowrap;
+    }
+
+    .hero h1 span + span {
+      margin-top: 6px;
+    }
+
+    .hero-body {
+      max-width: 600px;
+      margin: 26px 0 0;
+      color: var(--secondary);
+      font-size: 18px;
+      line-height: 1.68;
+    }
+
+    .hero-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 22px;
+      margin-top: 32px;
+    }
+
+    .hero-links a {
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .store-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 11px 18px;
+      border-radius: 9px;
+      color: var(--store-text);
+      background: var(--store-bg);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .hero-links .product-link {
+      padding: 10px 16px;
+      border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--border));
+      border-radius: 9px;
+      color: var(--accent);
+    }
+
+    .hero-note {
+      margin: 14px 0 0;
+      color: var(--secondary);
+      font-size: 13px;
+    }
+
+    .hero-visual {
+      align-self: stretch;
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-end;
+      padding-bottom: 48px;
+    }
+
+    .hero-preview {
+      width: 420px;
+      height: 610px;
+      overflow: hidden;
+      border: 1px solid var(--screen-border);
+      border-radius: 32px;
+      background: #ffffff;
+      box-shadow: var(--screen-shadow);
+    }
+
+    .hero-screen {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .section {
+      padding: 96px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .section-heading {
+      max-width: 790px;
+      margin-bottom: 56px;
+    }
+
+    .section-heading h2,
+    .plain-section h2 {
+      margin: 0;
+      font-family: ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: clamp(32px, 4vw, 44px);
+      line-height: 1.2;
+      letter-spacing: -0.035em;
+    }
+
+    .section-heading p {
+      max-width: 760px;
+      margin: 16px 0 0;
+      color: var(--secondary);
+      font-size: 18px;
+    }
+
+    .feature-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 56px;
+      border-top: 1px solid var(--border);
+    }
+
+    .feature-row {
+      padding: 30px 0 32px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .feature-row h3 {
+      margin: 0 0 10px;
+      font-size: 19px;
+      line-height: 1.45;
+      letter-spacing: -0.015em;
+    }
+
+    .feature-row p {
+      margin: 0;
+      color: var(--secondary);
+    }
+
+    .more-highlights {
+      display: grid;
+      grid-template-columns: 240px minmax(0, 1fr);
+      gap: 48px;
+      margin-top: 56px;
+      padding: 30px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .more-highlights h3 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .more-highlights ul {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px 28px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      color: var(--secondary);
+    }
+
+    .more-highlights li {
+      position: relative;
+      padding-left: 17px;
+    }
+
+    .more-highlights li::before {
+      content: "";
+      position: absolute;
+      top: 0.68em;
+      left: 0;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .showcase-section {
+      padding: 104px 0 112px;
+      color: var(--showcase-text);
+      background: var(--showcase);
+    }
+
+    .showcase-heading {
+      max-width: 790px;
+      margin-bottom: 58px;
+    }
+
+    .showcase-heading h2 {
+      margin: 0;
+      font-family: ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: clamp(32px, 4vw, 44px);
+      line-height: 1.2;
+      letter-spacing: -0.035em;
+    }
+
+    .showcase-heading p {
+      max-width: 760px;
+      margin: 16px 0 0;
+      color: var(--showcase-secondary);
+      font-size: 18px;
+    }
+
+    .screen-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 28px;
+    }
+
+    .screen-figure {
+      margin: 0;
+    }
+
+    .screen-crop {
+      height: 640px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 28px;
+      background: #ffffff;
+    }
+
+    .screen-crop img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .screen-figure figcaption {
+      margin-top: 16px;
+      color: var(--showcase-secondary);
+      font-size: 15px;
+    }
+
+    .usage-section {
+      background: var(--surface);
+    }
+
+    .steps {
+      counter-reset: steps;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 36px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .steps li {
+      counter-increment: steps;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+    }
+
+    .steps li::before {
+      content: "0" counter(steps);
+      display: block;
+      margin-bottom: 36px;
+      color: var(--secondary);
+      font-size: 13px;
+    }
+
+    .steps h3 {
+      margin: 0 0 9px;
+      font-size: 18px;
+    }
+
+    .steps p {
+      margin: 0;
+      color: var(--secondary);
+    }
+
+    .usage-action {
+      margin-top: 48px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .usage-action p {
+      margin: 0;
+      color: var(--secondary);
+      font-size: 14px;
+    }
+
+    .plain-section {
+      display: grid;
+      grid-template-columns: 240px minmax(0, 1fr);
+      gap: 48px;
+    }
+
+    .plain-section-copy {
+      max-width: 640px;
+    }
+
+    .plain-section-copy p {
+      margin: 3px 0 18px;
+      color: var(--secondary);
+      font-size: 17px;
+    }
+
+    .plain-section-copy a {
+      font-weight: 600;
+    }
+
+    .support-email {
+      word-break: break-word;
+    }
+
+    .site-footer {
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-inner {
+      min-height: 92px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      color: var(--secondary);
+      font-size: 14px;
+    }
+
+    .footer-inner p {
+      margin: 0;
+    }
+
+    .footer-inner a {
+      color: var(--secondary);
+    }
+
+    @media (max-width: 980px) and (min-width: 901px) {
+      .hero-layout {
+        grid-template-columns: minmax(0, 1fr) 350px;
+        gap: 36px;
+      }
+
+      .hero h1 {
+        font-size: clamp(48px, 6vw, 58px);
+      }
+
+      .hero-preview {
+        width: 350px;
+        height: 510px;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .header-inner,
+      .page,
+      .footer-inner {
+        width: min(100% - 32px, var(--page-width));
+      }
+
+      .header-inner {
+        min-height: 58px;
+      }
+
+      .site-nav {
+        display: none;
+      }
+
+      .language-control {
+        margin-left: auto;
+      }
+
+      .hero {
+        padding: 58px 0 0;
+      }
+
+      .hero-layout {
+        min-height: 0;
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .hero-copy {
+        padding-bottom: 0;
+      }
+
+      .product-identity {
+        margin-bottom: 26px;
+      }
+
+      .app-icon {
+        width: 58px;
+        height: 58px;
+        border-radius: 14px;
+      }
+
+      .hero h1 {
+        font-size: clamp(36px, 10vw, 50px);
+      }
+
+      .hero-body {
+        font-size: 17px;
+      }
+
+      .hero-visual {
+        height: auto;
+        justify-content: center;
+        padding-bottom: 42px;
+      }
+
+      .hero-preview {
+        width: min(420px, 100%);
+        height: min(610px, 142vw);
+        border-radius: 28px;
+      }
+
+      .section {
+        padding: 68px 0;
+      }
+
+      .plain-section {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .section-heading {
+        margin-bottom: 40px;
+      }
+
+      .section-heading p {
+        font-size: 17px;
+      }
+
+      .feature-list {
+        grid-template-columns: 1fr;
+        column-gap: 0;
+      }
+
+      .feature-row {
+        padding: 24px 0 26px;
+      }
+
+      .more-highlights {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        margin-top: 44px;
+      }
+
+      .more-highlights ul {
+        grid-template-columns: 1fr;
+      }
+
+      .showcase-section {
+        padding: 70px 0 76px;
+      }
+
+      .showcase-heading {
+        margin-bottom: 38px;
+      }
+
+      .showcase-heading p {
+        font-size: 17px;
+      }
+
+      .screen-grid {
+        grid-template-columns: 1fr;
+        gap: 42px;
+      }
+
+      .screen-crop {
+        height: min(660px, 138vw);
+        border-radius: 24px;
+      }
+
+      .steps {
+        grid-template-columns: 1fr;
+        gap: 34px;
+      }
+
+      .steps li::before {
+        margin-bottom: 16px;
+      }
+
+      .usage-action {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .footer-inner {
+        min-height: 104px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 8px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
 </head>
 <body>
+  <a class="skip-link" href="#main-content" data-i18n="skipLink">跳到主要内容</a>
 
-<div class="hero">
-  <h1>DDchat</h1>
-  <p>智能 AI 对话，多模型自由切换</p>
-</div>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#top" aria-label="DDchat">DDchat</a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="#product" data-i18n="navProduct">产品亮点</a>
+        <a href="#usage" data-i18n="navUsage">使用方式</a>
+        <a href="#privacy" data-i18n="navPrivacy">隐私</a>
+        <a href="#support" data-i18n="navSupport">支持</a>
+      </nav>
+      <div class="language-control">
+        <label class="sr-only" for="language-select" data-i18n="languageLabel">语言</label>
+        <select id="language-select" aria-label="语言">
+          <option value="zh-Hans">简体中文</option>
+          <option value="zh-Hant">繁體中文</option>
+          <option value="en">English</option>
+          <option value="ja">日本語</option>
+          <option value="ko">한국어</option>
+        </select>
+      </div>
+    </div>
+  </header>
 
-<div class="content">
-  <div class="section">
-    <h2>功能特色</h2>
-    <ul class="features">
-      <li>支持 Anthropic、DeepSeek、智谱、通义千问、Kimi 等多种 AI 服务商</li>
-      <li>自由切换不同的 AI 模型</li>
-      <li>创建多个自定义 AI 助手</li>
-      <li>实时流式对话，无需等待</li>
-      <li>支持展示 AI 思维链过程</li>
-      <li>Markdown 渲染与代码高亮</li>
-      <li>完整的对话历史管理</li>
-      <li>所有数据本地存储，保护隐私</li>
-      <li>完美适配深色模式</li>
-    </ul>
-  </div>
+  <main id="main-content">
+    <section class="hero-shell" id="top">
+      <div class="page hero">
+        <div class="hero-layout">
+          <div class="hero-copy">
+            <div class="product-identity">
+              <img class="app-icon" src="assets/app-icon.webp" alt="" width="64" height="64">
+              <span class="product-name">DDchat AI</span>
+            </div>
+            <h1>
+              <span data-i18n="heroTitleLine1">精致简约的 iOS</span>
+              <span data-i18n="heroTitleLine2">原生 AI 客户端</span>
+            </h1>
+            <p class="hero-body" data-i18n="heroBody">连接自己的 API，自由选择服务商与模型，并在对话中使用联网搜索、图片理解与 HTML 标签渲染。</p>
+            <div class="hero-links">
+              <a class="store-link" href="https://apps.apple.com/cn/app/ddchat-ai/id6766894679" data-store-link data-i18n="heroStore">前往 App Store</a>
+              <a class="product-link" href="#product" data-i18n="heroProduct">看看它能做什么</a>
+            </div>
+            <p class="hero-note" data-i18n="heroNote">需要自行提供 API 密钥；DDchat 不包含或提供 AI 服务。</p>
+          </div>
+          <div class="hero-visual">
+            <div class="hero-preview">
+              <img class="hero-screen" src="assets/screens/zh-Hans-home.webp" data-screen="home" data-alt-i18n="screenHomeAlt" alt="DDchat 助手首页" width="720" height="1558">
+            </div>
+          </div>
+        </div>
 
-  <div class="section contact">
-    <h2>技术支持</h2>
-    <p>如果您在使用 DDchat 时遇到任何问题，或有功能建议，欢迎通过以下方式联系我们：</p>
-    <p style="margin-top: 12px;"><strong>邮箱：</strong><a href="mailto:support@ddchat.app" style="color: #007AFF; text-decoration: none;">support@ddchat.app</a></p>
-  </div>
+      </div>
+    </section>
 
-  <div class="links">
-    <a href="privacy-policy.html" class="secondary">隐私政策</a>
-  </div>
-</div>
+    <section class="section" id="product">
+      <div class="page">
+        <div class="section-heading">
+          <h2 data-i18n="productTitle">原生 iOS，顺手也耐看</h2>
+          <p data-i18n="productIntro">流式回复、代码高亮、深浅色主题，每个细节都按原生 iOS 的使用习惯打磨。</p>
+        </div>
 
-<div class="footer">
-  <p>&copy; 2026 DDchat. 保留所有权利。</p>
-  <p style="margin-top: 4px;"><a href="privacy-policy.html">隐私政策</a></p>
-</div>
+        <div class="feature-list">
+          <article class="feature-row">
+            <h3 data-i18n="featureAssistantTitle">专属助手，各司其职</h3>
+            <p data-i18n="featureAssistantBody">为翻译、写作、代码等场景创建专属助手。提示词、参数、上下文长度和默认模型各自独立，打开就能用。</p>
+          </article>
+          <article class="feature-row">
+            <h3 data-i18n="featureSearchTitle">联网搜索，有据可查</h3>
+            <p data-i18n="featureSearchBody">模型可以根据问题主动搜索和浏览网页，并在回答中展示引用与来源，重要信息从哪里来，一眼就能查证。</p>
+          </article>
+          <article class="feature-row">
+            <h3 data-i18n="featureVisionTitle">多模态图片理解</h3>
+            <p data-i18n="featureVisionBody">拍照或从相册添加多张图片，分析截图、识别画面、阅读图片文字，直接与具备视觉能力的模型对话。</p>
+          </article>
+          <article class="feature-row">
+            <h3 data-i18n="featureHtmlTitle">HTML 标签，直接呈现</h3>
+            <p data-i18n="featureHtmlBody">AI 回复中的 HTML 标签可直接渲染为卡片、表格与列表。Markdown、代码高亮和一键复制也都内置其中。</p>
+          </article>
+          <article class="feature-row">
+            <h3 data-i18n="featureReasoningTitle">思考过程，清晰可见</h3>
+            <p data-i18n="featureReasoningBody">模型生成时实时预览思考过程，随时展开查看完整内容，并按模型支持情况选择合适的思考档位。</p>
+          </article>
+          <article class="feature-row">
+            <h3 data-i18n="featureModelTitle">模型能力，自动识别</h3>
+            <p data-i18n="featureModelBody">在线获取模型列表，也可以手动添加。思考、图片理解、工具调用和联网搜索能力会自动识别；需要时，也可按模型手动调整。</p>
+          </article>
+          <article class="feature-row">
+            <h3 data-i18n="featureApiTitle">自己的 API，自由连接</h3>
+            <p data-i18n="featureApiBody">连接官方 API、第三方中转站或代理服务，支持 Chat Completions、Responses、Anthropic 三种协议和自定义请求头。服务商与模型，由你自己选择。</p>
+          </article>
+          <article class="feature-row">
+            <h3 data-i18n="featureStorageTitle">隐私优先，本地存储</h3>
+            <p data-i18n="featureStorageBody">API 密钥保存在系统钥匙串，对话与助手配置留在设备本地。请求直接发送至所选服务商，不经过 DDchat 中间服务器。无分析、无广告、无追踪。</p>
+          </article>
+        </div>
 
+        <div class="more-highlights">
+          <h3 data-i18n="moreTitle">更多亮点</h3>
+          <ul>
+            <li data-i18n="moreHistory">按助手整理多轮对话</li>
+            <li data-i18n="moreShare">复制、导入和分享助手</li>
+            <li data-i18n="moreBackground">流式回复可在后台继续</li>
+            <li data-i18n="moreParallel">多个助手可以同时生成</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="showcase-section" aria-labelledby="showcase-title">
+      <div class="page">
+        <div class="showcase-heading">
+          <h2 id="showcase-title" data-i18n="showcaseTitle">搜得到，也看得清</h2>
+          <p data-i18n="showcaseBody">联网结果带引用，HTML 标签、代码块和图片内容直接在对话中呈现。</p>
+        </div>
+        <div class="screen-grid">
+          <figure class="screen-figure">
+            <div class="screen-crop">
+              <img src="assets/screens/zh-Hans-search.webp" data-screen="search" data-alt-i18n="screenSearchAlt" alt="DDchat 联网搜索会话界面" width="720" height="1558" loading="lazy">
+            </div>
+            <figcaption data-i18n="showcaseSearchCaption">联网搜索，有据可查</figcaption>
+          </figure>
+          <figure class="screen-figure">
+            <div class="screen-crop">
+              <img src="assets/screens/zh-Hans-html.webp" data-screen="html" data-alt-i18n="screenHtmlAlt" alt="DDchat HTML 标签渲染界面" width="720" height="1558" loading="lazy">
+            </div>
+            <figcaption data-i18n="showcaseHtmlCaption">HTML 标签，直接呈现</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section usage-section" id="usage">
+      <div class="page">
+        <div class="section-heading">
+          <h2 data-i18n="usageTitle">三步，开始对话</h2>
+          <p data-i18n="usageIntro">准备好自己的 API 地址和密钥，几分钟即可完成设置。</p>
+        </div>
+        <ol class="steps">
+          <li>
+            <h3 data-i18n="stepOneTitle">添加服务商</h3>
+            <p data-i18n="stepOneBody">填写服务地址与 API 密钥，并选择对应的接入协议。</p>
+          </li>
+          <li>
+            <h3 data-i18n="stepTwoTitle">创建专属助手</h3>
+            <p data-i18n="stepTwoBody">按用途设置提示词、对话参数、上下文长度和默认模型。</p>
+          </li>
+          <li>
+            <h3 data-i18n="stepThreeTitle">选择模型，开始对话</h3>
+            <p data-i18n="stepThreeBody">选择助手与模型，根据需要添加图片、联网搜索或调整思考档位。</p>
+          </li>
+        </ol>
+        <div class="usage-action">
+          <a class="store-link" href="https://apps.apple.com/cn/app/ddchat-ai/id6766894679" data-store-link data-i18n="usageStore">在 App Store 查看 DDchat</a>
+          <p data-i18n="usageNote">支持 iPhone 与 iPad，需要 iOS 16.0 或更高版本。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="privacy">
+      <div class="page plain-section">
+        <h2 data-i18n="privacyTitle">隐私优先，数据留在本地</h2>
+        <div class="plain-section-copy">
+          <p data-i18n="privacyBody">DDchat 不提供中转服务，也不进行分析、投放广告或追踪。请求会直接发送给所选服务商，数据如何处理取决于该服务商的政策。</p>
+          <a href="privacy-policy.html?lang=zh-Hans" data-privacy-link data-i18n="privacyLink">查看完整隐私政策</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="support">
+      <div class="page plain-section">
+        <h2 data-i18n="supportTitle">需要帮助？</h2>
+        <div class="plain-section-copy">
+          <p data-i18n="supportBody">使用中遇到问题，或有功能建议，欢迎发邮件告诉我们。</p>
+          <a class="support-email" href="mailto:ddchatsupport@gmail.com">ddchatsupport@gmail.com</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p>DDchat</p>
+      <a href="privacy-policy.html?lang=zh-Hans" data-privacy-link data-i18n="footerPrivacy">隐私政策</a>
+    </div>
+  </footer>
+
+  <script>
+    const translations = {
+      "zh-Hans": {
+        title: "DDchat — iOS AI 客户端",
+        description: "DDchat AI 是一款精致简约的 iOS 原生 AI 客户端，支持联网搜索、多模态图片理解与 HTML 标签渲染。",
+        skipLink: "跳到主要内容",
+        languageLabel: "语言",
+        navProduct: "产品亮点",
+        navUsage: "使用方式",
+        navPrivacy: "隐私",
+        navSupport: "支持",
+        heroTitleLine1: "精致简约的 iOS",
+        heroTitleLine2: "原生 AI 客户端",
+        heroBody: "连接自己的 API，自由选择服务商与模型，并在对话中使用联网搜索、图片理解与 HTML 标签渲染。",
+        heroStore: "前往 App Store",
+        heroProduct: "看看它能做什么",
+        heroNote: "需要自行提供 API 密钥；DDchat 不包含或提供 AI 服务。",
+        screenHomeAlt: "DDchat 助手首页",
+        productTitle: "原生 iOS，顺手也耐看",
+        productIntro: "流式回复、代码高亮、深浅色主题，每个细节都按原生 iOS 的使用习惯打磨。",
+        showcaseTitle: "搜得到，也看得清",
+        showcaseBody: "联网结果带引用，HTML 标签、代码块和图片内容直接在对话中呈现。",
+        showcaseSearchCaption: "联网搜索，有据可查",
+        showcaseHtmlCaption: "HTML 标签，直接呈现",
+        screenSearchAlt: "DDchat 联网搜索会话界面",
+        screenHtmlAlt: "DDchat HTML 标签渲染界面",
+        featureApiTitle: "自己的 API，自由连接",
+        featureApiBody: "连接官方 API、第三方中转站或代理服务，支持 Chat Completions、Responses、Anthropic 三种协议和自定义请求头。服务商与模型，由你自己选择。",
+        featureModelTitle: "模型能力，自动识别",
+        featureModelBody: "在线获取模型列表，也可以手动添加。思考、图片理解、工具调用和联网搜索能力会自动识别；需要时，也可按模型手动调整。",
+        featureSearchTitle: "联网搜索，有据可查",
+        featureSearchBody: "模型可以根据问题主动搜索和浏览网页，并在回答中展示引用与来源，重要信息从哪里来，一眼就能查证。",
+        featureVisionTitle: "多模态图片理解",
+        featureVisionBody: "拍照或从相册添加多张图片，分析截图、识别画面、阅读图片文字，直接与具备视觉能力的模型对话。",
+        featureHtmlTitle: "HTML 标签，直接呈现",
+        featureHtmlBody: "AI 回复中的 HTML 标签可直接渲染为卡片、表格与列表。Markdown、代码高亮和一键复制也都内置其中。",
+        featureReasoningTitle: "思考过程，清晰可见",
+        featureReasoningBody: "模型生成时实时预览思考过程，随时展开查看完整内容，并按模型支持情况选择合适的思考档位。",
+        featureAssistantTitle: "专属助手，各司其职",
+        featureAssistantBody: "为翻译、写作、代码等场景创建专属助手。提示词、参数、上下文长度和默认模型各自独立，打开就能用。",
+        featureStorageTitle: "隐私优先，本地存储",
+        featureStorageBody: "API 密钥保存在系统钥匙串，对话与助手配置留在设备本地。请求直接发送至所选服务商，不经过 DDchat 中间服务器。无分析、无广告、无追踪。",
+        moreTitle: "更多亮点",
+        moreHistory: "按助手整理多轮对话",
+        moreShare: "复制、导入和分享助手",
+        moreBackground: "流式回复可在后台继续",
+        moreParallel: "多个助手可以同时生成",
+        usageTitle: "三步，开始对话",
+        usageIntro: "准备好自己的 API 地址和密钥，几分钟即可完成设置。",
+        stepOneTitle: "添加服务商",
+        stepOneBody: "填写服务地址与 API 密钥，并选择对应的接入协议。",
+        stepTwoTitle: "创建专属助手",
+        stepTwoBody: "按用途设置提示词、对话参数、上下文长度和默认模型。",
+        stepThreeTitle: "选择模型，开始对话",
+        stepThreeBody: "选择助手与模型，根据需要添加图片、联网搜索或调整思考档位。",
+        usageStore: "在 App Store 查看 DDchat",
+        usageNote: "支持 iPhone 与 iPad，需要 iOS 16.0 或更高版本。",
+        privacyTitle: "隐私优先，数据留在本地",
+        privacyBody: "DDchat 不提供中转服务，也不进行分析、投放广告或追踪。请求会直接发送给所选服务商，数据如何处理取决于该服务商的政策。",
+        privacyLink: "查看完整隐私政策",
+        supportTitle: "需要帮助？",
+        supportBody: "使用中遇到问题，或有功能建议，欢迎发邮件告诉我们。",
+        footerPrivacy: "隐私政策"
+      },
+      "zh-Hant": {
+        title: "DDchat — iOS AI 客戶端",
+        description: "DDchat AI 是一款精緻簡約的 iOS 原生 AI 客戶端，支援聯網搜尋、多模態圖片理解與 HTML 標籤渲染。",
+        skipLink: "跳到主要內容",
+        languageLabel: "語言",
+        navProduct: "產品亮點",
+        navUsage: "使用方式",
+        navPrivacy: "隱私",
+        navSupport: "支援",
+        heroTitleLine1: "精緻簡約的 iOS",
+        heroTitleLine2: "原生 AI 客戶端",
+        heroBody: "連接自己的 API，自由選擇服務商與模型，並在對話中使用聯網搜尋、圖片理解與 HTML 標籤渲染。",
+        heroStore: "前往 App Store",
+        heroProduct: "看看它能做什麼",
+        heroNote: "需要自行提供 API 金鑰；DDchat 不包含或提供 AI 服務。",
+        screenHomeAlt: "DDchat 助手首頁",
+        productTitle: "原生 iOS，順手也耐看",
+        productIntro: "串流回覆、程式碼高亮、深淺色主題，每個細節都按原生 iOS 的使用習慣打磨。",
+        showcaseTitle: "搜得到，也看得清",
+        showcaseBody: "聯網結果帶有引用，HTML 標籤、程式碼區塊和圖片內容直接在對話中呈現。",
+        showcaseSearchCaption: "聯網搜尋，有據可查",
+        showcaseHtmlCaption: "HTML 標籤，直接呈現",
+        screenSearchAlt: "DDchat 網路搜尋會話介面",
+        screenHtmlAlt: "DDchat HTML 標籤渲染介面",
+        featureApiTitle: "自己的 API，自由連接",
+        featureApiBody: "連接官方 API、第三方中轉站或代理服務，支援 Chat Completions、Responses、Anthropic 三種協定和自訂請求標頭。服務商與模型，由你自己選擇。",
+        featureModelTitle: "模型能力，自動偵測",
+        featureModelBody: "可在線取得模型列表，也可以手動加入。思考、圖片理解、工具呼叫和聯網搜尋能力會自動偵測；需要時，也可按模型手動調整。",
+        featureSearchTitle: "聯網搜尋，有據可查",
+        featureSearchBody: "模型可以根據問題主動搜尋和瀏覽網頁，並在回答中顯示引用與來源，重要資訊的出處一目了然。",
+        featureVisionTitle: "多模態圖片理解",
+        featureVisionBody: "拍照或從相簿加入多張圖片，分析截圖、辨識畫面、閱讀圖片文字，直接與具備視覺能力的模型對話。",
+        featureHtmlTitle: "HTML 標籤，直接呈現",
+        featureHtmlBody: "AI 回覆中的 HTML 標籤可直接渲染為卡片、表格與清單。Markdown、程式碼高亮和一鍵複製也都內建其中。",
+        featureReasoningTitle: "思考過程，清晰可見",
+        featureReasoningBody: "模型生成時即時預覽思考過程，隨時展開查看完整內容，並依模型支援情況選擇合適的思考檔位。",
+        featureAssistantTitle: "專屬助手，各司其職",
+        featureAssistantBody: "為翻譯、寫作、程式碼等場景建立專屬助手。提示詞、參數、上下文長度和預設模型各自獨立，打開就能用。",
+        featureStorageTitle: "隱私優先，本機儲存",
+        featureStorageBody: "API 金鑰保存在系統鑰匙圈，對話與助手設定留在裝置本機。請求直接傳送至所選服務商，不經過 DDchat 中介伺服器。無分析、無廣告、無追蹤。",
+        moreTitle: "更多亮點",
+        moreHistory: "按助手整理多輪對話",
+        moreShare: "複製、匯入和分享助手",
+        moreBackground: "串流回覆可在背景繼續",
+        moreParallel: "多個助手可以同時生成",
+        usageTitle: "三步，開始對話",
+        usageIntro: "準備好自己的 API 位址和金鑰，幾分鐘即可完成設定。",
+        stepOneTitle: "加入服務商",
+        stepOneBody: "填寫服務網址與 API 金鑰，並選擇對應的接入協定。",
+        stepTwoTitle: "建立專屬助手",
+        stepTwoBody: "按用途設定提示詞、對話參數、上下文長度和預設模型。",
+        stepThreeTitle: "選擇模型，開始對話",
+        stepThreeBody: "選擇助手與模型，視需要加入圖片、使用網路搜尋或調整思考檔位。",
+        usageStore: "在 App Store 查看 DDchat",
+        usageNote: "支援 iPhone 與 iPad，需要 iOS 16.0 或更新版本。",
+        privacyTitle: "隱私優先，資料留在本機",
+        privacyBody: "DDchat 不提供中轉服務，也不進行分析、投放廣告或追蹤。請求會直接傳送給所選服務商，資料如何處理由該服務商的政策決定。",
+        privacyLink: "查看完整隱私政策",
+        supportTitle: "需要協助？",
+        supportBody: "使用中遇到問題，或有功能建議，歡迎寄信告訴我們。",
+        footerPrivacy: "隱私政策"
+      },
+      en: {
+        title: "DDchat — AI client for iOS",
+        description: "DDchat AI is a polished native iOS AI client with web search, multimodal image understanding, and HTML tag rendering.",
+        skipLink: "Skip to main content",
+        languageLabel: "Language",
+        navProduct: "Highlights",
+        navUsage: "Getting started",
+        navPrivacy: "Privacy",
+        navSupport: "Support",
+        heroTitleLine1: "A beautifully simple",
+        heroTitleLine2: "native AI client for iOS",
+        heroBody: "Connect your own APIs, choose the provider and model you want, then use web search, image understanding, and HTML tag rendering right in the conversation.",
+        heroStore: "View on the App Store",
+        heroProduct: "See what it can do",
+        heroNote: "Your own API key is required. DDchat does not include or provide an AI service.",
+        screenHomeAlt: "DDchat assistant home screen",
+        productTitle: "Made to feel at home on iOS",
+        productIntro: "Streaming replies, syntax-highlighted code, and Light and Dark Mode—every detail is shaped around the way iOS works.",
+        showcaseTitle: "Find it. See it clearly.",
+        showcaseBody: "Web results come with sources. HTML tags, code, and images appear right in the conversation.",
+        showcaseSearchCaption: "Web search with sources",
+        showcaseHtmlCaption: "HTML tags, rendered in chat",
+        screenSearchAlt: "Web search conversation in DDchat",
+        screenHtmlAlt: "HTML tag rendering in DDchat",
+        featureApiTitle: "Your APIs, your choice",
+        featureApiBody: "Connect official APIs, third-party gateways, or proxy services. DDchat supports Chat Completions, Responses, Anthropic, and custom request headers. You choose the provider and model.",
+        featureModelTitle: "Model capabilities, detected automatically",
+        featureModelBody: "Fetch model lists online or add models manually. DDchat detects reasoning, image understanding, tool use, and web search capabilities automatically, and you can adjust them for each model.",
+        featureSearchTitle: "Web search with sources",
+        featureSearchBody: "Models can search and browse the web when a question needs it. Citations and sources appear in the answer, so important information is easy to verify.",
+        featureVisionTitle: "Multimodal image understanding",
+        featureVisionBody: "Take a photo or add several images to analyze screenshots, understand scenes, and read text with a vision-capable model.",
+        featureHtmlTitle: "HTML tags, rendered in chat",
+        featureHtmlBody: "HTML tags in AI replies can appear as cards, tables, and lists. Markdown, syntax highlighting, and one-tap code copying are built in too.",
+        featureReasoningTitle: "See the reasoning process",
+        featureReasoningBody: "Watch the reasoning process as it is generated, expand it for the full content, and choose a supported reasoning level for each model.",
+        featureAssistantTitle: "An assistant for every task",
+        featureAssistantBody: "Create assistants for translation, writing, coding, and more. Each keeps its own prompt, parameters, context length, and default model, ready when you open it.",
+        featureStorageTitle: "Privacy-first, stored locally",
+        featureStorageBody: "API keys stay in the system Keychain, while chats and assistant settings stay on your device. Requests go directly to your selected provider without a DDchat intermediary server. No analytics, ads, or tracking.",
+        moreTitle: "More highlights",
+        moreHistory: "Multi-turn chats organized by assistant",
+        moreShare: "Duplicate, import, and share assistants",
+        moreBackground: "Keep streaming replies running in the background",
+        moreParallel: "Generate with multiple assistants at once",
+        usageTitle: "Three steps to start chatting",
+        usageIntro: "Bring your API endpoint and key. Setup takes only a few minutes.",
+        stepOneTitle: "Add a provider",
+        stepOneBody: "Enter the service URL and API key, then choose the corresponding protocol.",
+        stepTwoTitle: "Create your assistant",
+        stepTwoBody: "Set its prompt, chat parameters, context length, and default model for the task.",
+        stepThreeTitle: "Choose a model and chat",
+        stepThreeBody: "Choose an assistant and model, then add images, use web search, or adjust the reasoning level when needed.",
+        usageStore: "View DDchat on the App Store",
+        usageNote: "Made for iPhone and iPad. Requires iOS 16.0 or later.",
+        privacyTitle: "Privacy first. Your data stays local.",
+        privacyBody: "DDchat does not provide an intermediary service, run analytics, show ads, or track you. Requests go directly to your selected provider, whose policy determines how the data is handled.",
+        privacyLink: "Read the full Privacy Policy",
+        supportTitle: "Need help?",
+        supportBody: "If you run into a problem or have a feature suggestion, send us an email.",
+        footerPrivacy: "Privacy Policy"
+      },
+      ja: {
+        title: "DDchat — iOS 向け AI クライアント",
+        description: "DDchat AI は、ウェブ検索、マルチモーダル画像理解、HTML タグ表示に対応した、洗練された iOS ネイティブ AI クライアントです。",
+        skipLink: "メインコンテンツへ移動",
+        languageLabel: "言語",
+        navProduct: "主な特長",
+        navUsage: "使い方",
+        navPrivacy: "プライバシー",
+        navSupport: "サポート",
+        heroTitleLine1: "シンプルで洗練された",
+        heroTitleLine2: "iOS AI クライアント",
+        heroBody: "ご自身の API を接続してプロバイダーとモデルを自由に選び、ウェブ検索、画像理解、HTML タグ表示を会話の中で利用できます。",
+        heroStore: "App Store で見る",
+        heroProduct: "できることを見る",
+        heroNote: "ご利用にはご自身の API キーが必要です。DDchat は AI サービス自体を含まず、提供もしていません。",
+        screenHomeAlt: "DDchat のアシスタントホーム画面",
+        productTitle: "iOS らしい、自然な使い心地",
+        productIntro: "ストリーミング表示、コードのシンタックスハイライト、ライト／ダークモードまで、iOS の使い方に合わせて細部を整えました。",
+        showcaseTitle: "検索結果も、表示も分かりやすく",
+        showcaseBody: "ウェブ検索には情報源を表示。HTML タグ、コード、画像も会話の中でそのまま確認できます。",
+        showcaseSearchCaption: "出典を確認できるウェブ検索",
+        showcaseHtmlCaption: "HTML タグを会話内で直接表示",
+        screenSearchAlt: "DDchat のウェブ検索会話画面",
+        screenHtmlAlt: "DDchat の HTML タグ表示画面",
+        featureApiTitle: "自分の API を、自由に接続",
+        featureApiBody: "公式 API、第三者ゲートウェイ、プロキシに接続できます。Chat Completions、Responses、Anthropic の 3 つのプロトコルとカスタムリクエストヘッダーに対応。プロバイダーとモデルは自分で選べます。",
+        featureModelTitle: "モデル能力を自動判定",
+        featureModelBody: "モデル一覧をオンラインで取得するほか、手動でも追加できます。思考、画像理解、ツール呼び出し、ウェブ検索への対応を自動判定し、モデルごとの手動調整にも対応します。",
+        featureSearchTitle: "出典を確認できるウェブ検索",
+        featureSearchBody: "質問に応じてモデルがウェブを検索・閲覧し、回答内に引用と情報源を表示します。重要な情報の出典をすぐに確認できます。",
+        featureVisionTitle: "マルチモーダル画像理解",
+        featureVisionBody: "写真を撮影するか複数の画像を追加して、スクリーンショットの分析、場面の認識、画像内テキストの読み取りができます。",
+        featureHtmlTitle: "HTML タグを会話内で直接表示",
+        featureHtmlBody: "AI の回答に含まれる HTML タグをカード、表、リストとして表示。Markdown、シンタックスハイライト、コードコピーも内蔵しています。",
+        featureReasoningTitle: "思考過程を分かりやすく表示",
+        featureReasoningBody: "生成中の思考過程をリアルタイムで確認し、展開して全文を読めます。モデルの対応状況に応じて思考段階も選択できます。",
+        featureAssistantTitle: "用途別アシスタント",
+        featureAssistantBody: "翻訳、文章作成、コーディングなどの専用アシスタントを作成。プロンプト、パラメータ、コンテキスト長、既定モデルを個別に保存できます。",
+        featureStorageTitle: "プライバシーを重視、端末内に保存",
+        featureStorageBody: "API キーはシステムのキーチェーンに、会話とアシスタント設定は端末内に保存されます。リクエストは選択したプロバイダーへ直接送信され、DDchat の中継サーバーを経由しません。解析、広告、追跡はありません。",
+        moreTitle: "その他の特長",
+        moreHistory: "アシスタントごとに整理された複数の会話",
+        moreShare: "アシスタントの複製、インポート、共有",
+        moreBackground: "バックグラウンドでもストリーミングを継続",
+        moreParallel: "複数のアシスタントで同時に生成",
+        usageTitle: "3 ステップで会話を開始",
+        usageIntro: "API の URL とキーを用意すれば、数分で設定できます。",
+        stepOneTitle: "プロバイダーを追加",
+        stepOneBody: "サービスの URL と API キーを入力し、対応する接続プロトコルを選びます。",
+        stepTwoTitle: "専用アシスタントを作成",
+        stepTwoBody: "用途に合わせてプロンプト、会話パラメータ、コンテキスト長、既定モデルを設定します。",
+        stepThreeTitle: "モデルを選んで会話を開始",
+        stepThreeBody: "アシスタントとモデルを選び、必要に応じて画像、ウェブ検索、思考レベルを設定します。",
+        usageStore: "App Store で DDchat を見る",
+        usageNote: "iPhone と iPad に対応。iOS 16.0 以降が必要です。",
+        privacyTitle: "プライバシーを重視、データは端末内に",
+        privacyBody: "DDchat は中継サービスを提供せず、解析、広告、追跡も行いません。リクエストは選択したプロバイダーへ直接送信され、データの取り扱いにはそのプロバイダーのポリシーが適用されます。",
+        privacyLink: "プライバシーポリシーを読む",
+        supportTitle: "お困りですか？",
+        supportBody: "使用中の問題や機能のご要望がありましたら、メールでお知らせください。",
+        footerPrivacy: "プライバシーポリシー"
+      },
+      ko: {
+        title: "DDchat — iOS용 AI 클라이언트",
+        description: "DDchat AI는 웹 검색, 멀티모달 이미지 이해, HTML 태그 렌더링을 지원하는 세련된 iOS 네이티브 AI 클라이언트입니다.",
+        skipLink: "주요 콘텐츠로 이동",
+        languageLabel: "언어",
+        navProduct: "주요 기능",
+        navUsage: "사용 방법",
+        navPrivacy: "개인정보",
+        navSupport: "지원",
+        heroTitleLine1: "세련되고 간결한",
+        heroTitleLine2: "iOS용 AI 클라이언트",
+        heroBody: "사용자의 API를 연결해 제공업체와 모델을 자유롭게 선택하고 웹 검색, 이미지 이해, HTML 태그 렌더링을 대화에서 바로 이용할 수 있습니다.",
+        heroStore: "App Store에서 보기",
+        heroProduct: "주요 기능 보기",
+        heroNote: "사용자가 직접 준비한 API 키가 필요합니다. DDchat은 AI 서비스 자체를 포함하거나 제공하지 않습니다.",
+        screenHomeAlt: "DDchat 어시스턴트 홈 화면",
+        productTitle: "iOS답게 자연스럽고 편안하게",
+        productIntro: "스트리밍 응답, 코드 구문 강조, 라이트 및 다크 모드까지 iOS 사용 방식에 맞춰 세부 경험을 다듬었습니다.",
+        showcaseTitle: "찾은 정보도, 답변도 한눈에",
+        showcaseBody: "웹 검색 결과에는 출처가 표시되고 HTML 태그, 코드, 이미지도 대화에서 바로 확인할 수 있습니다.",
+        showcaseSearchCaption: "출처를 확인할 수 있는 웹 검색",
+        showcaseHtmlCaption: "HTML 태그를 대화에서 바로 표시",
+        screenSearchAlt: "DDchat 웹 검색 대화 화면",
+        screenHtmlAlt: "DDchat HTML 태그 렌더링 화면",
+        featureApiTitle: "사용자의 API를 자유롭게 연결",
+        featureApiBody: "공식 API, 서드파티 게이트웨이 또는 프록시 서비스에 연결할 수 있습니다. Chat Completions, Responses, Anthropic 세 가지 프로토콜과 사용자 지정 요청 헤더를 지원하며 제공업체와 모델은 사용자가 선택합니다.",
+        featureModelTitle: "모델 기능 자동 감지",
+        featureModelBody: "온라인에서 모델 목록을 가져오거나 직접 추가할 수 있습니다. 사고, 이미지 이해, 도구 호출, 웹 검색 지원 여부를 자동으로 감지하며 모델별로 직접 조정할 수도 있습니다.",
+        featureSearchTitle: "출처를 확인할 수 있는 웹 검색",
+        featureSearchBody: "질문에 따라 모델이 웹을 검색하고 페이지를 탐색하며 답변에 인용과 출처를 표시합니다. 중요한 정보의 근거를 바로 확인할 수 있습니다.",
+        featureVisionTitle: "멀티모달 이미지 이해",
+        featureVisionBody: "사진을 촬영하거나 여러 이미지를 추가해 스크린샷을 분석하고 장면을 이해하며 이미지 속 텍스트를 읽을 수 있습니다.",
+        featureHtmlTitle: "HTML 태그를 대화에서 바로 표시",
+        featureHtmlBody: "AI 응답의 HTML 태그를 카드, 표, 목록으로 렌더링합니다. Markdown 파싱, 코드 구문 강조, 원탭 복사도 내장되어 있습니다.",
+        featureReasoningTitle: "사고 과정을 명확하게 표시",
+        featureReasoningBody: "생성 중인 사고 과정을 실시간으로 확인하고 펼쳐서 전체 내용을 볼 수 있습니다. 모델이 지원하는 사고 단계도 선택할 수 있습니다.",
+        featureAssistantTitle: "용도별 전용 어시스턴트",
+        featureAssistantBody: "번역, 글쓰기, 코딩 등에 맞는 어시스턴트를 만들 수 있습니다. 프롬프트, 매개변수, 컨텍스트 길이, 기본 모델을 각각 저장해 바로 사용할 수 있습니다.",
+        featureStorageTitle: "개인정보 우선, 기기에 저장",
+        featureStorageBody: "API 키는 시스템 키체인에, 대화와 어시스턴트 설정은 기기에 저장됩니다. 요청은 선택한 제공업체로 직접 전송되며 DDchat 중계 서버를 거치지 않습니다. 분석, 광고, 추적 기능은 없습니다.",
+        moreTitle: "더 많은 기능",
+        moreHistory: "어시스턴트별로 정리된 여러 대화",
+        moreShare: "어시스턴트 복제, 가져오기, 공유",
+        moreBackground: "백그라운드에서도 스트리밍 응답 계속",
+        moreParallel: "여러 어시스턴트에서 동시에 생성",
+        usageTitle: "세 단계로 대화 시작",
+        usageIntro: "API 주소와 키를 준비하면 몇 분 안에 설정할 수 있습니다.",
+        stepOneTitle: "제공업체 추가",
+        stepOneBody: "서비스 주소와 API 키를 입력한 다음 해당 연결 프로토콜을 선택합니다.",
+        stepTwoTitle: "전용 어시스턴트 만들기",
+        stepTwoBody: "용도에 맞춰 프롬프트, 대화 매개변수, 컨텍스트 길이, 기본 모델을 설정합니다.",
+        stepThreeTitle: "모델을 선택하고 대화 시작",
+        stepThreeBody: "어시스턴트와 모델을 선택하고 필요에 따라 이미지, 웹 검색 또는 사고 단계를 설정합니다.",
+        usageStore: "App Store에서 DDchat 보기",
+        usageNote: "iPhone 및 iPad 지원. iOS 16.0 이상이 필요합니다.",
+        privacyTitle: "개인정보 우선, 데이터는 기기에",
+        privacyBody: "DDchat은 중계 서비스를 제공하지 않으며 분석, 광고, 추적 기능도 사용하지 않습니다. 요청은 선택한 제공업체로 직접 전송되며 데이터 처리에는 해당 제공업체의 정책이 적용됩니다.",
+        privacyLink: "개인정보 처리방침 전체 보기",
+        supportTitle: "도움이 필요하신가요?",
+        supportBody: "사용 중 문제가 발생하거나 기능을 제안하고 싶다면 이메일로 알려 주세요.",
+        footerPrivacy: "개인정보 처리방침"
+      }
+    };
+
+    const languageSelect = document.getElementById("language-select");
+    const supportedLanguages = Object.keys(translations);
+    const metaDescription = document.querySelector('meta[name="description"]');
+    const screenSources = {
+      "zh-Hans": {
+        home: "assets/screens/zh-Hans-home.webp",
+        search: "assets/screens/zh-Hans-search.webp",
+        html: "assets/screens/zh-Hans-html.webp"
+      },
+      "zh-Hant": {
+        home: "assets/screens/zh-Hant-home.webp",
+        search: "assets/screens/zh-Hant-search.webp",
+        html: "assets/screens/zh-Hant-html.webp"
+      },
+      en: {
+        home: "assets/screens/en-home.webp",
+        search: "assets/screens/en-search.webp",
+        html: "assets/screens/en-html.webp"
+      },
+      ja: {
+        home: "assets/screens/ja-home.webp",
+        search: "assets/screens/ja-search.webp",
+        html: "assets/screens/ja-html.webp"
+      },
+      ko: {
+        home: "assets/screens/ko-home.webp",
+        search: "assets/screens/ko-search.webp",
+        html: "assets/screens/ko-html.webp"
+      }
+    };
+    const storeURLs = {
+      "zh-Hans": "https://apps.apple.com/cn/app/ddchat-ai/id6766894679",
+      "zh-Hant": "https://apps.apple.com/tw/app/ddchat-ai/id6766894679",
+      en: "https://apps.apple.com/us/app/ddchat-ai/id6766894679",
+      ja: "https://apps.apple.com/jp/app/ddchat-ai/id6766894679",
+      ko: "https://apps.apple.com/kr/app/ddchat-ai/id6766894679"
+    };
+
+    function normalizedLanguage(language) {
+      if (!language) return "zh-Hans";
+      if (supportedLanguages.includes(language)) return language;
+      const value = language.toLowerCase();
+      if (value.startsWith("zh-hant") || value.startsWith("zh-tw") || value.startsWith("zh-hk")) return "zh-Hant";
+      if (value.startsWith("zh")) return "zh-Hans";
+      if (value.startsWith("ja")) return "ja";
+      if (value.startsWith("ko")) return "ko";
+      if (value.startsWith("en")) return "en";
+      return "en";
+    }
+
+    function storedLanguage() {
+      try {
+        return window.localStorage.getItem("ddchat-language");
+      } catch (_) {
+        return null;
+      }
+    }
+
+    function storeLanguage(language) {
+      try {
+        window.localStorage.setItem("ddchat-language", language);
+      } catch (_) {
+        // Storage can be unavailable in private browsing contexts.
+      }
+    }
+
+    function showLanguage(language, updateURL = false) {
+      const selectedLanguage = normalizedLanguage(language);
+      const copy = translations[selectedLanguage];
+
+      document.documentElement.lang = selectedLanguage;
+      document.title = copy.title;
+      metaDescription.setAttribute("content", copy.description);
+      languageSelect.value = selectedLanguage;
+      languageSelect.setAttribute("aria-label", copy.languageLabel);
+
+      document.querySelectorAll("[data-i18n]").forEach((element) => {
+        const value = copy[element.dataset.i18n];
+        if (value) element.textContent = value;
+      });
+
+      document.querySelectorAll("[data-aria-i18n]").forEach((element) => {
+        const value = copy[element.dataset.ariaI18n];
+        if (value) element.setAttribute("aria-label", value);
+      });
+
+      document.querySelectorAll("[data-alt-i18n]").forEach((element) => {
+        const value = copy[element.dataset.altI18n];
+        if (value) element.setAttribute("alt", value);
+      });
+
+      document.querySelectorAll("[data-screen]").forEach((element) => {
+        const source = screenSources[selectedLanguage][element.dataset.screen];
+        if (source) element.setAttribute("src", source);
+      });
+
+      document.querySelectorAll("[data-store-link]").forEach((link) => {
+        link.setAttribute("href", storeURLs[selectedLanguage]);
+      });
+
+      document.querySelectorAll("[data-privacy-link]").forEach((link) => {
+        link.setAttribute("href", `privacy-policy.html?lang=${encodeURIComponent(selectedLanguage)}`);
+      });
+
+      storeLanguage(selectedLanguage);
+      if (updateURL) {
+        const url = new URL(window.location.href);
+        url.searchParams.set("lang", selectedLanguage);
+        window.history.replaceState({}, "", url);
+      }
+    }
+
+    const requestedLanguage = new URLSearchParams(window.location.search).get("lang");
+    const browserLanguage = (navigator.languages && navigator.languages[0]) || navigator.language;
+    showLanguage(requestedLanguage || storedLanguage() || browserLanguage);
+    languageSelect.addEventListener("change", (event) => showLanguage(event.target.value, true));
+  </script>
 </body>
 </html>
