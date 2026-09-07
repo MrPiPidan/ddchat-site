@@ -4,24 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DDchat 隐私政策</title>
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: -apple-system, 'SF Pro Text', 'PingFang SC', sans-serif; font-size: 16px; line-height: 1.8; color: #1c1c1e; background: #fff; padding: 20px; max-width: 720px; margin: 0 auto; }
-  .language-bar { display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-bottom: 20px; }
-  .language-bar label { font-size: 14px; color: #636366; }
-  .language-bar select { font: inherit; font-size: 14px; color: #1c1c1e; background: #f2f2f7; border: 0; border-radius: 8px; padding: 7px 30px 7px 10px; }
-  h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
-  h2 { font-size: 20px; font-weight: 600; margin-top: 32px; margin-bottom: 12px; }
-  p { margin-bottom: 12px; }
-  ul { padding-left: 1.5em; margin-bottom: 12px; }
-  li { margin-bottom: 6px; }
-  .date { font-size: 14px; color: #8e8e93; margin-bottom: 24px; }
-  .footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid #e5e5ea; font-size: 14px; color: #8e8e93; }
-  [hidden] { display: none !important; }
-</style>
+<meta name="theme-color" content="#f7f6f9">
+<link rel="icon" href="assets/app-icon.webp" type="image/webp">
+<link rel="stylesheet" href="assets/site.css">
 </head>
-<body>
+<body class="policy-page">
 
+<header class="container policy-header">
+  <a class="brand" id="policy-home" href="index.html?lang=zh-Hans"><img src="assets/app-icon.webp" width="34" height="34" alt=""><span>DDchat</span></a>
 <div class="language-bar">
   <label for="language-select">Language</label>
   <select id="language-select" aria-label="Language">
@@ -32,6 +22,7 @@
     <option value="ko">한국어</option>
   </select>
 </div>
+</header>
 
 <main>
   <article data-language="zh-Hans">
@@ -382,6 +373,8 @@
     languageSelect.value = selectedLanguage;
     document.documentElement.lang = selectedLanguage;
     document.title = titles[selectedLanguage];
+    document.getElementById('policy-home').href = 'index.html?lang=' + encodeURIComponent(selectedLanguage);
+    try { window.localStorage.setItem('ddchat-language', selectedLanguage); } catch (_) {}
 
     if (updateURL) {
       const url = new URL(window.location.href);
@@ -391,7 +384,9 @@
   }
 
   const requestedLanguage = new URLSearchParams(window.location.search).get('lang');
-  showLanguage(requestedLanguage || navigator.language);
+  let savedLanguage;
+  try { savedLanguage = window.localStorage.getItem('ddchat-language'); } catch (_) {}
+  showLanguage(requestedLanguage || savedLanguage || navigator.language);
   languageSelect.addEventListener('change', (event) => showLanguage(event.target.value, true));
 </script>
 
