@@ -84,8 +84,19 @@ img {
 }
 
 :focus-visible {
-  outline:3px solid #8661be;
-  outline-offset:5px
+  outline:2px solid #737379;
+  outline-offset:3px
+}
+
+/* Native selects can retain :focus-visible after a pointer opens the menu. */
+html[data-focus-input="pointer"] :focus {
+  outline:none
+}
+
+@media(forced-colors:active) {
+  :focus-visible {
+    outline-color:Highlight
+  }
 }
 
 .container {
@@ -225,9 +236,14 @@ img {
   min-height:44px;
   padding:5px 0;
   border:0;
+  border-radius:8px;
   background:transparent;
   font-size:11px;
   cursor:pointer
+}
+
+.language-control select:hover {
+  background:#20202409
 }
 
 .header-download {
