@@ -101,7 +101,7 @@ const translations = {
     "libraryBody": "用卡片整理助手，可长按拖动排序。回来时恢复上次对话，有新回复就从新消息开头读起。",
     "copied": "已复制",
     "copyFailed": "请选取代码复制",
-    "title": "DDchat — 精致简约的 iOS 原生 AI 客户端",
+    "title": "DDchat使用指南 — 精致简约的 iOS 原生 AI 客户端",
     "description": "DDchat，精致简约的 iOS 原生 AI 客户端。自定义 API、自动识别模型，在对话中渲染 HTML 标签，为不同用途配置助手。对话保存在本地。",
     "locale": "zh_CN"
   },
@@ -205,7 +205,7 @@ const translations = {
     "libraryBody": "以卡片整理助手，可長按拖曳排序。回來時恢復上次對話，有新回覆就從新訊息開頭讀起。",
     "copied": "已複製",
     "copyFailed": "請選取程式碼複製",
-    "title": "DDchat — 精緻簡約的 iOS 原生 AI 用戶端",
+    "title": "DDchat使用指南 — 精緻簡約的 iOS 原生 AI 用戶端",
     "description": "原生設計，簡單易用。自訂 API、自動識別模型、對話內 HTML 標籤渲染與多助手設定。",
     "locale": "zh_TW"
   },
@@ -309,7 +309,7 @@ const translations = {
     "libraryBody": "Arrange assistant cards by dragging. Return to your last conversation, or start at the beginning of a new unread reply.",
     "copied": "Copied",
     "copyFailed": "Select the code to copy it",
-    "title": "DDchat — A thoughtfully designed, native AI client for iOS",
+    "title": "DDchat使用指南 — A thoughtfully designed, native AI client for iOS",
     "description": "A native AI client for iPhone and iPad. Connect your APIs, recognize model capabilities, render HTML in conversations, and configure your own assistants.",
     "locale": "en_US"
   },
@@ -413,7 +413,7 @@ const translations = {
     "libraryBody": "カードをドラッグして並べ替え。前回の会話を再開でき、新しい返信があればその冒頭から読めます。",
     "copied": "コピーしました",
     "copyFailed": "コードを選択してコピーしてください",
-    "title": "DDchat — 美しくシンプルな iOS ネイティブ AI クライアント",
+    "title": "DDchat使用指南 — 美しくシンプルな iOS ネイティブ AI クライアント",
     "description": "iPhone・iPad 向けのネイティブ AI クライアント。自分の API、モデルの自動認識、会話内の HTML 表示、アシスタントの個別設定。",
     "locale": "ja_JP"
   },
@@ -517,7 +517,7 @@ const translations = {
     "libraryBody": "카드를 끌어서 도우미 순서를 바꾸세요. 이전 대화를 이어가고, 새 답변은 처음부터 읽을 수 있습니다.",
     "copied": "복사됨",
     "copyFailed": "코드를 선택해 복사하세요",
-    "title": "DDchat — 아름답고 간결한 iOS 네이티브 AI 클라이언트",
+    "title": "DDchat使用指南 — 아름답고 간결한 iOS 네이티브 AI 클라이언트",
     "description": "iPhone과 iPad를 위한 네이티브 AI 클라이언트. 내 API 연결, 모델 자동 인식, 대화 속 HTML 렌더링, 도우미별 설정을 지원합니다.",
     "locale": "ko_KR"
   }
